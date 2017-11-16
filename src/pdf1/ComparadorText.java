@@ -140,6 +140,22 @@ public class ComparadorText {
         return longestLine;
     }
 
+    private String chooseLine(String line1, String line2){
+        if(line1.equals(line2)){
+            return "";
+        }
+        Scanner sc = new Scanner(System.in);
+        String opcio = "";
+        System.out.println();
+        do{
+            System.out.print((char)27 +"[34;1mEscolleix quina linea vols:");
+            System.out.print((char)27 +"[33m 1 ");
+            System.out.print((char)27 +"[32m2");
+            opcio = sc.next();
+        }while(!opcio.equals("1") || !opcio.equals("2"));
+        return opcio.equals("1") ? line1 : line2;
+    }
+
     public void merge(String path1, String path2) throws IOException {
         BufferedReader file1= leerArchivo(path1, null);
         BufferedReader file2= leerArchivo(path2, null);
@@ -155,8 +171,11 @@ public class ComparadorText {
                 line1 = file1.readLine();
             }
 
-            System.out.print(String.format("%-" + page_width + "s", (char)27 +"[0m"));
-
+            if(line1.equals(line2)){
+                System.out.print(String.format("%-" + page_width + "s", (char)27 +"[0m"+chooseLine(line1,line2)));
+            }else{
+                System.out.print(String.format("%-" + page_width + "s", (char)27 +"[0m"));
+            }
             if(line2 != null){
                 System.out.print((char)27 +"[30;42;1m"+line2);
                 line2 = file2.readLine();
